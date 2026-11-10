@@ -1,0 +1,12 @@
+target/
+logs/
+.idea/
+*.iml
+.vscode/
+application-local.yml
+.env
+.env.*
+!.env.example
+src/main/resources/keys/*-private.pem
+.pytest_cache/
+__pycache__/

@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 默认指向开发环境的 tripagent 库；可通过环境变量覆盖
+    url: ${DB_URL:jdbc:mysql://192.168.150.101:3306/tripagent?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true}
+    username: ${DB_USERNAME:root}
+    # 生产/本地均通过 DB_PASSWORD 注入，不保留仓库默认密码
+    password: ${DB_PASSWORD:}
+    hikari:
+      pool-name: TripAgentHikari
+      minimum-idle: 2
+      maximum-pool-size: 10
+      connection-timeout: 5000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+  sql:
+    init:
+      mode: never
+
+logging:
+  level:
+    com.tripagent: debug
+    com.tripagent.user.mapper: debug

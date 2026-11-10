@@ -1,0 +1,15 @@
+target/
+logs/
+.env
+.env.*
+.idea/
+.git/
+.vscode/
+hs_err_pid*.log
+*.iml
+tests/
+scripts/
+pytest.ini
+requirements-test.txt
+README.md
+docs/
