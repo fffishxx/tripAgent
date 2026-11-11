@@ -1,0 +1,23 @@
+spring:
+  cloud:
+    nacos:
+      server-addr: ${NACOS_SERVER_ADDR:} # nacos注册中心；必须由环境变量注入
+      username: ${NACOS_USERNAME:}
+      password: ${NACOS_PASSWORD:}
+      discovery:
+        namespace: ${NACOS_DISCOVERY_NAMESPACE:f923fb34-cb0a-4c06-8fca-ad61ea61a3f0}
+        group: ${NACOS_DISCOVERY_GROUP:DEFAULT_GROUP}
+        ip: ${NACOS_DISCOVERY_IP:}
+      config:
+        file-extension: yaml
+  config:
+    import:
+      - optional:file:.env[.properties] # Gateway 本地开发配置
+      - nacos:shared-logs.yaml # 共享日志配置
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+logging:
+  com.agent: debug

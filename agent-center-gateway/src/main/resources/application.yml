@@ -1,0 +1,39 @@
+server:
+  port: 10086  #端口
+  tomcat:
+    uri-encoding: UTF-8   #服务编码
+spring:
+  profiles:
+    active: local
+  application:
+    name: agent-center-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: acs
+          uri: lb://agent-center # 负载均衡路由到agent-center服务
+          predicates:
+            - Path=/acs/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                rateLimiter: "#{@redisRateLimiter}"   # 使用 Redis 限流器
+                keyResolver: "#{@apiKeyResolver}"      # 按请求路径限流
+                redis-rate-limiter.replenishRate: 10  # 每秒恢复 10 个令牌
+                redis-rate-limiter.burstCapacity: 20  # 桶最大容量 20
+            - name: CircuitBreaker
+              args:
+                name: courseCircuitBreaker   # 熔断器名称
+                fallbackUri: forward:/fallback/ac  # 熔断后的降级地址
+      default-filters:
+        - StripPrefix=1 # 转发请求时去掉/acs前缀
+
+gateway:
+  # 只信任携带该内部 Token 的 Java 后端调用；必须通过环境变量注入
+  internal-token: ${GATEWAY_INTERNAL_TOKEN:}
+  agent:
+    auth-url: ${AGENT_AUTH_URL:http://127.0.0.1:18089/auth/token}
+    # 必须来自 agent_center.app_info 或 .env；仓库不保留默认凭据
+    app-key: ${AGENT_APP_KEY:}
+    app-secret: ${AGENT_APP_SECRET:}
+    refresh-margin-seconds: ${AGENT_TOKEN_REFRESH_MARGIN:300}

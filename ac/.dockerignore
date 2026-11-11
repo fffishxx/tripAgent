@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+logs/
+nacos-data/
+.idea/
+.git/
+.vscode/
+application.yml
+.env
+.env.*
+*.local.yml
+tests/
+docs/

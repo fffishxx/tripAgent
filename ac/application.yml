@@ -1,0 +1,148 @@
+server:
+  port: "${SERVER_PORT:18089}"
+  host: "${SERVER_HOST:0.0.0.0}"
+  logger:
+    level: "${LOG_LEVEL:INFO}"
+
+jwt:
+  private_key: "${JWT_PRIVATE_KEY:}"
+  public_key: "${JWT_PUBLIC_KEY:}"
+  expire_hours: "${JWT_EXPIRE_HOURS:720}"
+
+db:
+  # 必须由 .env 或环境变量提供；不在仓库保留数据库密码
+  url: "${DB_URL:}"
+  pool_size: "${DB_POOL_SIZE:10}"
+  max_overflow: "${DB_MAX_OVERFLOW:20}"
+  pool_timeout: "${DB_POOL_TIMEOUT:30}"
+  pool_recycle: "${DB_POOL_RECYCLE:1800}"
+  echo: "${DB_ECHO:false}"
+
+ai:
+  "1004":
+    session:
+      title: Hello，我是出行小助手
+      describe: 我可以为你规划旅行行程、查询天气与景点、推荐当地美食，并在后台校验行程路线是否合理。
+      examples:
+        - title: "出行推荐"
+          describe: "帮我规划杭州三日游"
+        - title: "出行推荐"
+          describe: "下周去成都玩4天，带父母，帮我安排一下"
+        - title: "出行推荐"
+          describe: "周末想去苏州逛逛，两个人，预算不多"
+        - title: "出行推荐"
+          describe: "第一次去北京，5天时间，想去经典景点"
+        - title: "出行推荐"
+          describe: "带孩子去上海玩3天，怎么安排比较好？"
+        - title: "出行推荐"
+          describe: "大理三日游行程推荐"
+        - title: "出行推荐"
+          describe: "西安两天一夜怎么玩？"
+        - title: "出行推荐"
+          describe: "想去厦门看海，帮我排个轻松的行程"
+        - title: "路线推荐"
+          describe: "从西湖到灵隐寺怎么走？"
+        - title: "旅游知识"
+          describe: "去云南旅游需要注意什么？"
+        - title: "旅游知识"
+          describe: "杭州有哪些必吃的本地美食？"
+        - title: "一键打车"
+          describe: "帮我叫一辆车去故宫"
+  openai:
+    model: "${OPENAI_MODEL:deepseek-flash}"
+    api-key: "${OPENAI_API_KEY:}"
+    base-url: "${OPENAI_BASE_URL:https://api.deepseek.com}"
+    temperature: "${OPENAI_TEMPERATURE:0.8}"
+    timeout: "${OPENAI_TIMEOUT:30}"
+    structured-output:
+      disable-thinking: "${OPENAI_DISABLE_THINKING:true}"
+      timeout: "${OPENAI_STRUCTURED_TIMEOUT:90}"
+  agent:
+    checkpointer:
+      postgres:
+        min: "${PG_POOL_MIN:5}"
+        max: "${PG_POOL_MAX:10}"
+        url: "${POSTGRES_URL:}"
+
+redis:
+  host: "${REDIS_HOST:127.0.0.1}"
+  port: "${REDIS_PORT:6379}"
+  password: "${REDIS_PASSWORD:}"
+
+nacos:
+  server-addr: "${NACOS_SERVER_ADDR:}"
+  username: "${NACOS_USERNAME:}"
+  password: "${NACOS_PASSWORD:}"
+  config:
+    namespace: "${NACOS_CONFIG_NAMESPACE:public}"
+    group: "${NACOS_CONFIG_GROUP:DEFAULT_GROUP}"
+  discovery:
+    name: "${NACOS_DISCOVERY_NAME:agent-center}"
+    namespace: "${NACOS_DISCOVERY_NAMESPACE:public}"
+    # C-14：必须显式提供外部 Gateway 可达的宿主 IP；无默认值
+    ip: "${NACOS_DISCOVERY_IP:}"
+
+prompt:
+  intent:
+    prompt:
+      data-id: intent-prompt.txt
+    json-instruction:
+      data-id: intent-json-instruction.txt
+
+  planner:
+    prompt:
+      data-id: planner-prompt.txt
+    format-plan:
+      data-id: format-plan-prompt.txt
+    format-json-instruction:
+      data-id: format-json-instruction.txt
+
+  knowledge:
+    prompt:
+      data-id: knowledge-prompt.txt
+
+  other:
+    prompt:
+      data-id: other-prompt.txt
+
+  route:
+    prompt:
+      data-id: route-prompt.txt
+
+amap:
+  key: "${AMAP_KEY:}"
+  timeout: "${AMAP_TIMEOUT:10}"
+
+taxi:
+  use-didi: "${TAXI_USE_DIDI:false}"
+
+didi:
+  mcp:
+    key: "${DIDI_MCP_KEY:}"
+    base-url: "${DIDI_MCP_BASE_URL:https://mcp.didichuxing.com/mcp-servers}"
+    sandbox-url: "${DIDI_MCP_SANDBOX_URL:https://mcp.didichuxing.com/mcp-servers-sandbox}"
+    sandbox: "${DIDI_MCP_SANDBOX:true}"
+    timeout: "${DIDI_MCP_TIMEOUT:15}"
+
+langfuse:
+  enabled: "${LANGFUSE_ENABLED:false}"
+  public-key: "${LANGFUSE_PUBLIC_KEY:}"
+  secret-key: "${LANGFUSE_SECRET_KEY:}"
+  base-url: "${LANGFUSE_BASE_URL:}"
+  environment: "${LANGFUSE_ENVIRONMENT:development}"
+
+security:
+  gateway:
+    # Gateway app_key 白名单（逗号分隔）；为空表示不限制 app_key
+    allowed-app-keys: "${AGENT_ALLOWED_APP_KEYS:}"
+    # /auth/token 可选 IP 白名单（逗号分隔）；为空表示不限制来源 IP
+    auth-token-allowed-ips: "${AUTH_TOKEN_ALLOWED_IPS:}"
+
+java:
+  backend:
+    base-url: "${JAVA_BACKEND_BASE_URL:http://127.0.0.1:8080}"
+    service-token: "${AGENT_SERVICE_TOKEN:}"
+    connect-timeout: "${JAVA_BACKEND_CONNECT_TIMEOUT:3}"
+    read-timeout: "${JAVA_BACKEND_READ_TIMEOUT:10}"
+    agent-id: "${AGENT_ID:1004}"
+    max-retries: "${JAVA_BACKEND_MAX_RETRIES:2}"
